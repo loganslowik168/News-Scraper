@@ -1,5 +1,5 @@
 import pickle
-
+import plotext as plt
 def process_line(line):
     try:
         # Split the line into date part and pickled part
@@ -53,3 +53,6 @@ if GOAL == 'echo':
 elif GOAL == 'plot':
 	plotData()
 	print(graphData)
+	plt.scatter(graphData)
+	plt.title('Usage of term ' + TARGET + ' over time')
+	plt.show()
