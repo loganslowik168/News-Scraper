@@ -24,12 +24,18 @@ TARGET = input('Enter a search term (case insensitive): ')
 with open('/home/slowikl/PythonPrograms/NewsScraper/News-Scraper/scrape_data.txt', 'r') as file:
     lines = file.readlines()
 
-# Process each line in the file
-for line in lines:
-	date, data = process_line(line)
-	print(f"--- Date: {date} --- ")
-	for entry in data:
-		if TARGET.lower() in entry.lower():
-			print(entry)
-	print('*'*40)
+def printRawData():
+	# Process each line in the file
+	for line in lines:
+		date, data = process_line(line)
+		print(f"--- Date: {date} --- ")
+		for entry in data:
+			if TARGET.lower() in entry.lower():
+				print(entry)
+		print('*'*40)
 
+
+
+GOAL = input('What to do with this data? (Choose: echo/plot)')
+if GOAL == 'echo':
+	printRawData()
