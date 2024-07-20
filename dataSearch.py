@@ -19,6 +19,9 @@ def process_line(line):
 ###begin
 TARGET = input('Enter a search term (case insensitive): ')
 
+#gloabls
+graphData = []
+
 
 # Read the input file
 with open('/home/slowikl/PythonPrograms/NewsScraper/News-Scraper/scrape_data.txt', 'r') as file:
@@ -34,8 +37,20 @@ def printRawData():
 				print(entry)
 		print('*'*40)
 
+def plotData():
+	
+	count = 0
+	for line in lines:
+		date, data = process_line(line)
+		for entry in data:
+			if TARGET.lower() in entry.lower():
+				count+=1
+				graphData.append(data)
 
 
 GOAL = input('What to do with this data? (Choose: echo/plot)')
 if GOAL == 'echo':
 	printRawData()
+elif GOAL == 'plot':
+	plotData()
+	print(graphData)
