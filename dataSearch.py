@@ -38,14 +38,13 @@ def printRawData():
 		print('*'*40)
 
 def plotData():
-	
-	count = 0
 	for line in lines:
+		count = 0
 		date, data = process_line(line)
 		for entry in data:
 			if TARGET.lower() in entry.lower():
 				count+=1
-				graphData.append(data)
+		graphData.append(count)
 
 
 GOAL = input('What to do with this data? (Choose: echo/plot)')
