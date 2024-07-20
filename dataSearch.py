@@ -38,21 +38,24 @@ def printRawData():
 		print('*'*40)
 
 def plotData():
+	earliestDate='00'
 	for line in lines:
 		count = 0
 		date, data = process_line(line)
+		if earliestDate == '00':
+			earliestDate = date
 		for entry in data:
 			if TARGET.lower() in entry.lower():
 				count+=1
 		graphData.append(count)
-
+	return earliestDate
 
 GOAL = input('What to do with this data? (Choose: echo/plot)')
 if GOAL == 'echo':
 	printRawData()
 elif GOAL == 'plot':
-	plotData()
+	ed=plotData()
 	print(graphData)
-	plt.scatter(graphData)
-	plt.title('Usage of term ' + TARGET + ' over time')
+	plt.plot(graphData)
+	plt.title('Usage of term \'' + TARGET + '\' over time since ' + ed)
 	plt.show()
