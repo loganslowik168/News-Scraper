@@ -1,5 +1,7 @@
 import pickle
-import plotext as plt
+import matplotlib.pyplot as plt
+import matplotlib.dates as mdates
+from datetime import datetime
 def process_line(line):
     try:
         # Split the line into date part and pickled part
@@ -20,7 +22,7 @@ def process_line(line):
 TARGET = input('Enter a search term (case insensitive): ')
 
 #gloabls
-graphData = []
+graphData = {}
 
 
 # Read the input file
@@ -39,23 +41,37 @@ def printRawData():
 
 def plotData():
 	earliestDate='00'
+	#for each scrape run
 	for line in lines:
 		count = 0
 		date, data = process_line(line)
 		if earliestDate == '00':
 			earliestDate = date
+		#for each array element
 		for entry in data:
 			if TARGET.lower() in entry.lower():
 				count+=1
-		graphData.append(count)
+			graphData[date] = count
+
 	return earliestDate
 
 GOAL = input('What to do with this data? (Choose: echo/plot)')
 if GOAL == 'echo':
 	printRawData()
 elif GOAL == 'plot':
-	ed=plotData()
-	print(graphData)
-	plt.plot(graphData)
-	plt.title('Usage of term \'' + TARGET + '\' over time since ' + ed)
+	ed = plotData()
+	dates = list(graphData.keys())
+	values = list(graphData.values())
+	print(f"dates: {dates}\n\n\nvalues: {values}")
+	# Convert date strings to datetime objects
+	dates = [datetime.strptime(date, '%m-%d-%Y %I:%M %p') for date in dates]
+	plt.figure(figsize=(10, 5))
+	plt.plot(dates, values, marker='o')
+	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m-%d-%Y %I:%M %p'))
+	plt.gca().xaxis.set_major_locator(mdates.AutoDayLocator())
+	plt.gcf().autofmt_xdate()
+	plt.xlabel('Date')
+	plt.ylabel('Number of articles')
+	plt.title('Articles about ' + TARGET)
+	plt.savefig('image_out.png')
 	plt.show()
