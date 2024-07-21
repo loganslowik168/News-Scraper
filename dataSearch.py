@@ -55,10 +55,10 @@ def plotData():
 
 	return earliestDate
 
-GOAL = input('What to do with this data? (Choose: echo/plot)')
-if GOAL == 'echo':
+GOAL = input('What to do with this data? (Choose: [e]cho/[p]lot)')
+if GOAL == 'echo' or GOAL == 'e':
 	printRawData()
-elif GOAL == 'plot':
+elif GOAL == 'plot' or GOAL == 'p':
 	ed = plotData()
 	dates = list(graphData.keys())
 	values = list(graphData.values())
