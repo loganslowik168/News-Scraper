@@ -19,11 +19,17 @@ def process_line(line):
         return None, None
 
 ###begin
-TARGET = input('Enter a search term (case insensitive): ')
+while True:
+	try:
+		SAMPLES = int(input('Enter number of search terms to be plotted: '))
+		break
+	except:
+		print('Not a valid option.')
 
 #gloabls
+fullDataset = []
 graphData = {}
-
+allTerms = []
 
 # Read the input file
 with open('/home/slowikl/PythonPrograms/NewsScraper/News-Scraper/scrape_data.txt', 'r') as file:
@@ -39,7 +45,7 @@ def printRawData():
 				print(entry)
 		print('*'*40)
 
-def plotData():
+def gatherDataset():
 	earliestDate='00'
 	#for each scrape run
 	for line in lines:
@@ -55,23 +61,32 @@ def plotData():
 
 	return earliestDate
 
-GOAL = input('What to do with this data? (Choose: [e]cho/[p]lot)')
-if GOAL == 'echo' or GOAL == 'e':
-	printRawData()
-elif GOAL == 'plot' or GOAL == 'p':
-	ed = plotData()
-	dates = list(graphData.keys())
-	values = list(graphData.values())
-	print(f"dates: {dates}\nvalues: {values}")
+
+##### propgram below
+for sample in range(SAMPLES):
+	TARGET = input('Enter a search term (case insensitive): ')
+	ed = gatherDataset()
+	fullDataset.append(graphData.copy())
+	allTerms.append(TARGET)
+
+#print('Full dataset IS')
+#print(fullDataset)
+plt.figure(figsize=(10, 5))
+plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m-%d-%Y %I:%M %p'))
+plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
+plt.gcf().autofmt_xdate()
+plt.xlabel('Date')
+plt.ylabel('Number of articles')
+plt.title('')
+
+for searchTerm in fullDataset:
+	dates = list(searchTerm.keys())
+	#print(f"Dates: {dates}")
+	values = list(searchTerm.values())
+	#print(f"Vals: {values}")
 	# Convert date strings to datetime objects
 	dates = [datetime.strptime(date, '%m-%d-%Y %I:%M %p') for date in dates]
-	plt.figure(figsize=(10, 5))
-	plt.plot(dates, values, marker='o')
-	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m-%d-%Y %I:%M %p'))
-	plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
-	plt.gcf().autofmt_xdate()
-	plt.xlabel('Date')
-	plt.ylabel('Number of articles')
-	plt.title('Articles about ' + TARGET)
-	plt.savefig('image_out.png')
-	plt.show()
+	plt.plot(dates, values, marker='o', label=allTerms.pop(0))
+plt.legend(loc="upper left")
+plt.savefig('image_out.png')
+#plt.show()
