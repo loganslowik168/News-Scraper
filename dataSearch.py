@@ -62,13 +62,13 @@ elif GOAL == 'plot':
 	ed = plotData()
 	dates = list(graphData.keys())
 	values = list(graphData.values())
-	print(f"dates: {dates}\n\n\nvalues: {values}")
+	print(f"dates: {dates}\nvalues: {values}")
 	# Convert date strings to datetime objects
 	dates = [datetime.strptime(date, '%m-%d-%Y %I:%M %p') for date in dates]
 	plt.figure(figsize=(10, 5))
 	plt.plot(dates, values, marker='o')
 	plt.gca().xaxis.set_major_formatter(mdates.DateFormatter('%m-%d-%Y %I:%M %p'))
-	plt.gca().xaxis.set_major_locator(mdates.AutoDayLocator())
+	plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
 	plt.gcf().autofmt_xdate()
 	plt.xlabel('Date')
 	plt.ylabel('Number of articles')
