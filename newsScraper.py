@@ -3,12 +3,12 @@ from bs4 import BeautifulSoup
 import pickle
 import datetime
 
-def scrape(url):
+def scrape(url, htmlHeaderType):
 
 	response = requests.get(url)
 	strippedLines = []
 	soup = BeautifulSoup(response.text, 'html.parser')
-	headlines = soup.find('body').find_all('h2')
+	headlines = soup.find('body').find_all(htmlHeaderType)
 	date = datetime.datetime.now().strftime('%m-%d-%Y %I:%M %p')
 
 #---
@@ -33,4 +33,4 @@ def scrape(url):
 		file.write(f"{date}{dataBreak}{pickled}\n")
 
 ###function call(s)
-scrape('https://www.bbc.com/news')
+scrape('https://www.bbc.com/news', 'h2)
