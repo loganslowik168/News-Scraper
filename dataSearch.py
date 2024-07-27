@@ -58,10 +58,10 @@ def gatherDataset():
 			earliestDate = date
 		#for each array element
 		for entry in data:
-			if TARGET.lower() in entry.lower() and SAMPLE_SOURCE.lower() in entry.lower():
+			if TARGET.lower() in entry.lower() and SAMPLE_SOURCE.lower() in source.lower():
 				count+=1
 			graphData[date] = count
-		print(f"{count} results matched your query")
+#		print(f"{count} results matched your query")
 	return earliestDate
 
 
