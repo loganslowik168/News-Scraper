@@ -30,7 +30,7 @@ def scrape(url, htmlHeaderType):
 
 	#write data
 	with open('/home/slowikl/PythonPrograms/NewsScraper/News-Scraper/scrape_data.txt', 'a') as file:
-		file.write(f"{date}{dataBreak}{pickled}\n")
+		file.write(f"{url}{dataBreak}{date}{dataBreak}{pickled}\n")
 
 ###function call(s)
 scrape('https://www.bbc.com/news', 'h2)

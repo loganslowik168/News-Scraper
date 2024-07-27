@@ -3,28 +3,31 @@ import matplotlib.pyplot as plt
 import matplotlib.dates as mdates
 from datetime import datetime
 def process_line(line):
-    try:
-        # Split the line into date part and pickled part
-        date_part, pickled_part = line.strip().split('|--|')
-
-        # Strip any extra whitespace from the date part
-        date = date_part.strip()
+	try:
+	# Split the line into date part and pickled part
+		date_part, source_part, pickled_part = line.strip().split('|--|')
+	# Strip any extra whitespace from the date part
+		date = date_part.strip()
+		source = source_part.strip()
 
         # Unpickle the data (pickled_part is expected to be a valid Python bytes object as a string)
-        pickled_data = pickle.loads(eval(pickled_part))
-
-        return date, pickled_data
-    except Exception as e:
-        print(f"Error processing line: {line}\n{e}")
-        return None, None
+		pickled_data = pickle.loads(eval(pickled_part))
+#		print(f"Date: {date}\nSource: {source}\nPickledData: {pickled_data}")
+		return date, source, pickled_data
+	except Exception as e:
+        	print(f"Error processing line: {line}\n{e}")
+	        return None, None, None
 
 ###begin
+SAMPLE_SOURCE = input('Enter the site you wish to scrape:')
+
 while True:
 	try:
 		SAMPLES = int(input('Enter number of search terms to be plotted: '))
 		break
 	except:
 		print('Not a valid option.')
+
 
 #gloabls
 fullDataset = []
@@ -38,7 +41,7 @@ with open('/home/slowikl/PythonPrograms/NewsScraper/News-Scraper/scrape_data.txt
 def printRawData():
 	# Process each line in the file
 	for line in lines:
-		date, data = process_line(line)
+		date, source, data = process_line(line)
 		print(f"--- Date: {date} --- ")
 		for entry in data:
 			if TARGET.lower() in entry.lower():
@@ -50,15 +53,15 @@ def gatherDataset():
 	#for each scrape run
 	for line in lines:
 		count = 0
-		date, data = process_line(line)
+		date, source, data = process_line(line)
 		if earliestDate == '00':
 			earliestDate = date
 		#for each array element
 		for entry in data:
-			if TARGET.lower() in entry.lower():
+			if TARGET.lower() in entry.lower() and SAMPLE_SOURCE.lower() in entry.lower():
 				count+=1
 			graphData[date] = count
-
+		print(f"{count} results matched your query")
 	return earliestDate
 
 
@@ -77,7 +80,8 @@ plt.gca().xaxis.set_major_locator(mdates.AutoDateLocator())
 plt.gcf().autofmt_xdate()
 plt.xlabel('Date')
 plt.ylabel('Number of articles')
-plt.title('')
+titleText = "Source: " + SAMPLE_SOURCE
+plt.title(titleText)
 
 for searchTerm in fullDataset:
 	dates = list(searchTerm.keys())
