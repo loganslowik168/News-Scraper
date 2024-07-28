@@ -35,3 +35,5 @@ def scrape(url, htmlHeaderType):
 ###function call(s)
 scrape('https://www.bbc.com/news', 'h2')
 scrape('https://www.washingtonpost.com/', 'h2')
+scrape('https://www.foxnews.com/', 'h3')
+scrape('https://www.yahoo.com/', 'h3')
