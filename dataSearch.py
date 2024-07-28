@@ -53,15 +53,27 @@ def gatherDataset():
 	#for each scrape run
 	for line in lines:
 		count = 0
-		date, source, data = process_line(line)
+		source, date, data = process_line(line)
 		if earliestDate == '00':
 			earliestDate = date
+			#print(f"Src={source}\nDate={date}\nData={data}")
 		#for each array element
 		for entry in data:
-			if TARGET.lower() in entry.lower() and SAMPLE_SOURCE.lower() in source.lower():
-				count+=1
+			if TARGET.lower() in entry.lower():
+#				count+=1000
+#				print(f"{SAMPLE_SOURCE.lower()} in {source.lower()}")
+				if SAMPLE_SOURCE.lower() in source.lower():
+#					print("YES")
+					count+=1
+#		print(f"final count: {count}")
+#		with open('/home/slowikl/PythonPrograms/NewsScraper/News-Scraper/l1.log', 'a') as file:
+#			file.write(f"Changing graphData[{date}] to {count}\n")
+		if SAMPLE_SOURCE.lower() in source.lower():
 			graphData[date] = count
+
 #		print(f"{count} results matched your query")
+#	print("FINAL")
+#	print(graphData)
 	return earliestDate
 
 
@@ -85,9 +97,9 @@ plt.title(titleText)
 
 for searchTerm in fullDataset:
 	dates = list(searchTerm.keys())
-	#print(f"Dates: {dates}")
+#	print(f"Dates: {dates}")
 	values = list(searchTerm.values())
-	#print(f"Vals: {values}")
+#	print(f"Vals: {values}")
 	# Convert date strings to datetime objects
 	dates = [datetime.strptime(date, '%m-%d-%Y %I:%M %p') for date in dates]
 	plt.plot(dates, values, marker='o', label=allTerms.pop(0))
