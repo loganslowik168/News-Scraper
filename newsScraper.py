@@ -33,4 +33,5 @@ def scrape(url, htmlHeaderType):
 		file.write(f"{url}{dataBreak}{date}{dataBreak}{pickled}\n")
 
 ###function call(s)
-scrape('https://www.bbc.com/news', 'h2)
+scrape('https://www.bbc.com/news', 'h2')
+scrape('https://www.washingtonpost.com/', 'h2')
