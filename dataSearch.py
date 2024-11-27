@@ -35,7 +35,7 @@ graphData = {}
 allTerms = []
 
 # Read the input file
-with open('/home/slowikl/PythonPrograms/NewsScraper/News-Scraper/scrape_data.txt', 'r') as file:
+with open('/home/slowikl/PythonPrograms/NewsScraper//scrape_data.txt', 'r') as file:
     lines = file.readlines()
 
 def printRawData():
